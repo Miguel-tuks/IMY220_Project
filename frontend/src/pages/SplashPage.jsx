@@ -4,7 +4,7 @@ import SignUpForm from '../components/SignUpForm';
 function SplashPage() {
   return (
     <main>
-      <h1>PixelShare</h1>
+      <h1>Grail</h1>
       <SignInForm />
       <SignUpForm />
     </main>

@@ -1,5 +1,21 @@
-IMY 220 Project 
+IMY 220 Project 2026 - Deliverable 1
+Miguel De Freitas u23744512
 
-Miguel De Freitas — u23744512
+GitHub Repository:
+https://github.com/Miguel-tuks/IMY220_Project
 
-A photo sharing website where users share and organise their photos.
+BACKEND
+Build:
+    cd backend
+    docker build -t imy220-backend .
+Run:
+    docker run -p 3000:3000 --name imy220-backend-container imy220-backend
+
+FRONTEND
+Build:
+    cd frontend
+    docker build -t imy220-frontend .
+Run:
+    docker run -p 5173:5173 --name imy220-frontend-container imy220-frontend
+
+Access the application at http://localhost:5173
