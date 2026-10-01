@@ -1,55 +1,121 @@
-import { useParams } from 'react-router-dom';
-import Header from '../components/Header';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { apiRequest } from '../api';
 import Profile from '../components/Profile';
 import EditProfile from '../components/EditProfile';
-import CreatePost from '../components/CreatePost';
-import PostList from '../components/PostList';
+import FriendRequests from '../components/FriendRequests';
 import Friend from '../components/Friend';
+import CreatePost from '../components/CreatePost';
+import CreateAlbum from '../components/CreateAlbum';
+import PostList from '../components/PostList';
+import AlbumList from '../components/AlbumList';
 
-const profileData = {
-  user_id: 1,
-  username: 'dummy_user',
-  bio: 'Takes too many photos.',
-  profile_image: 'https://picsum.photos/id/1011/200/200'
-};
-
-const userPosts = [
-  {
-    post_id: 1,
-    user_id: 1,
-    username: 'dummy_user',
-    caption: 'Sunset at the dam',
-    image_url: 'https://picsum.photos/id/1015/300/200'
-  },
-  {
-    post_id: 5,
-    user_id: 1,
-    username: 'dummy_user',
-    caption: 'Study desk',
-    image_url: 'https://picsum.photos/id/1074/300/200'
-  }
-];
-
-const friends = [
-  { user_id: 2, username: 'john_s' },
-  { user_id: 3, username: 'alex_s' }
-];
-
-function ProfilePage() {
+function ProfilePage({ user, setUser }) {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [error, setError] = useState('');
+
+  const isOwnProfile = user._id === id;
+  const canEdit = isOwnProfile || user.is_admin;
+
+  const loadProfile = () => {
+    apiRequest('/users/' + id)
+      .then((data) => setProfile(data))
+      .catch((err) => setError(err.message));
+    apiRequest('/posts/user/' + id).then((data) => setPosts(data));
+    apiRequest('/albums/user/' + id).then((data) => setAlbums(data));
+  };
+
+  useEffect(() => {
+    loadProfile();
+  }, [id]);
+
+  if (!profile) {
+    return <p className="text-muted">{error || 'Loading...'}</p>;
+  }
+
+  const isFriend = profile.friends.some((friend) => friend._id === user._id);
+  const requestSent = profile.friend_requests.some((request) => request._id === user._id);
+
+  const friendAction = async (path, method, body) => {
+    await apiRequest(path, method, body);
+    loadProfile();
+  };
+
+  const handleSaved = (updatedUser) => {
+    setEditing(false);
+    if (isOwnProfile) {
+      setUser({ ...user, ...updatedUser });
+    }
+    loadProfile();
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm('Delete this account? This cannot be undone.')) {
+      return;
+    }
+
+    await apiRequest('/users/' + id, 'DELETE');
+
+    if (isOwnProfile) {
+      setUser(null);
+    } else {
+      navigate('/home');
+    }
+  };
 
   return (
-    <>
-      <Header />
-      <main>
-        <p>Profile ID: {id}</p>
-        <Profile profile={profileData} />
-        <EditProfile profile={profileData} />
-        <CreatePost />
-        <PostList posts={userPosts} />
-        <Friend friends={friends} />
-      </main>
-    </>
+    <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
+      <aside className="space-y-6">
+        <Profile profile={profile}>
+          {!isOwnProfile && isFriend && (
+            <button className="btn-outline" onClick={() => friendAction('/users/' + user._id + '/friends/' + id, 'DELETE')}>
+              Unfriend
+            </button>
+          )}
+          {!isOwnProfile && !isFriend && requestSent && (
+            <button className="btn-outline opacity-60" disabled>Request sent</button>
+          )}
+          {!isOwnProfile && !isFriend && !requestSent && (
+            <button className="btn" onClick={() => friendAction('/users/' + id + '/requests', 'POST', { from_id: user._id })}>
+              Add friend
+            </button>
+          )}
+          {canEdit && (
+            <button className="btn-outline" onClick={() => setEditing(!editing)}>
+              {editing ? 'Cancel' : 'Edit profile'}
+            </button>
+          )}
+          {canEdit && <button className="btn-danger" onClick={handleDelete}>Delete account</button>}
+        </Profile>
+
+        {editing && canEdit && <EditProfile key={profile._id} profile={profile} onSaved={handleSaved} />}
+
+        {isOwnProfile && (
+          <FriendRequests
+            requests={profile.friend_requests}
+            onAccept={(requestId) => friendAction('/users/' + user._id + '/friends', 'POST', { friend_id: requestId })}
+          />
+        )}
+
+        <Friend friends={profile.friends} />
+      </aside>
+
+      <section>
+        {isOwnProfile && (
+          <div className="mb-8 grid gap-6 md:grid-cols-2">
+            <CreatePost user={user} onCreated={loadProfile} />
+            <CreateAlbum user={user} onCreated={loadProfile} />
+          </div>
+        )}
+        <PostList title="Posts" posts={posts} />
+        <AlbumList title="Albums" albums={albums} />
+      </section>
+    </div>
   );
 }
 

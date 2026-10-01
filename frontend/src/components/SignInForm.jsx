@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiRequest } from '../api';
 
-function SignInForm() {
+function SignInForm({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,32 +21,34 @@ function SignInForm() {
       return;
     }
 
-    setError('');
+    try {
+      const data = await apiRequest('/signin', 'POST', { email, password });
 
-    const response = await fetch('http://localhost:3000/api/signin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+      if (!data.success) {
+        setError(data.message);
+        return;
+      }
 
-    const data = await response.json();
-    setMessage(data.message + ' - ' + data.user.username);
+      onLogin(data.user);
+      navigate('/home');
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
-    <section>
-      <h2>Sign In</h2>
+    <section className="card">
+      <h2 className="text-2xl font-bold">Sign In</h2>
       <form onSubmit={handleSubmit}>
-        <label>Email</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <label className="label">Email</label>
+        <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-        <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <label className="label">Password</label>
+        <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
         <p className="error">{error}</p>
-        <button type="submit">Sign In</button>
+        <button type="submit" className="btn mt-3 w-full">Sign In</button>
       </form>
-      <p>{message}</p>
     </section>
   );
 }

@@ -1,51 +1,43 @@
-import Header from '../components/Header';
+import { useEffect, useState } from 'react';
+import { apiRequest } from '../api';
 import SearchInput from '../components/SearchInput';
 import Feed from '../components/Feed';
 
-const localPosts = [
-  {
-    post_id: 1,
-    user_id: 1,
-    username: 'dummy_user',
-    caption: 'Sunset at the dam',
-    image_url: 'https://picsum.photos/id/1015/300/200'
-  },
-  {
-    post_id: 2,
-    user_id: 2,
-    username: 'jane_d',
-    caption: 'Morning coffee',
-    image_url: 'https://picsum.photos/id/1060/300/200'
-  }
-];
+function HomePage({ user }) {
+  const [feedType, setFeedType] = useState('local');
+  const [feed, setFeed] = useState({ posts: [], albums: [] });
+  const [error, setError] = useState('');
 
-const globalPosts = [
-  {
-    post_id: 3,
-    user_id: 3,
-    username: 'john_s',
-    caption: 'City lights',
-    image_url: 'https://picsum.photos/id/1019/300/200'
-  },
-  {
-    post_id: 4,
-    user_id: 4,
-    username: 'alex_s',
-    caption: 'Mountain trail',
-    image_url: 'https://picsum.photos/id/1036/300/200'
-  }
-];
+  useEffect(() => {
+    const path = feedType === 'local' ? '/feed/local/' + user._id : '/feed/global';
+    apiRequest(path)
+      .then((data) => setFeed(data))
+      .catch((err) => setError(err.message));
+  }, [feedType, user._id]);
 
-function HomePage() {
+  const tabClass = (type) => (feedType === type ? 'btn' : 'btn-outline');
+
   return (
-    <>
-      <Header />
-      <main>
+    <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
+      <section>
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-3xl font-bold">{feedType === 'local' ? 'Friends Feed' : 'Global Feed'}</h1>
+          <div className="flex gap-2">
+            <button className={tabClass('local')} onClick={() => setFeedType('local')}>Local</button>
+            <button className={tabClass('global')} onClick={() => setFeedType('global')}>Global</button>
+          </div>
+        </div>
+        <p className="error">{error}</p>
+        <Feed
+          posts={feed.posts}
+          albums={feed.albums}
+          emptyMessage={feedType === 'local' ? 'Add some friends to see their posts here.' : 'No posts yet.'}
+        />
+      </section>
+      <aside>
         <SearchInput />
-        <Feed title="Friends Feed" posts={localPosts} />
-        <Feed title="Explore Feed" posts={globalPosts} />
-      </main>
-    </>
+      </aside>
+    </div>
   );
 }
 

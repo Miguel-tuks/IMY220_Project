@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { apiRequest, parseHashtags } from '../api';
 
-function EditPost({ post, onSaved }) {
-  const [description, setDescription] = useState(post.description);
-  const [hashtags, setHashtags] = useState(post.hashtags.map((tag) => '#' + tag).join(' '));
+function EditAlbum({ album, onSaved }) {
+  const [name, setName] = useState(album.name);
+  const [description, setDescription] = useState(album.description);
+  const [hashtags, setHashtags] = useState(album.hashtags.map((tag) => '#' + tag).join(' '));
   const [error, setError] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await apiRequest('/posts/' + post._id, 'PUT', {
+      await apiRequest('/albums/' + album._id, 'PUT', {
+        name,
         description,
         hashtags: parseHashtags(hashtags)
       });
@@ -21,11 +23,14 @@ function EditPost({ post, onSaved }) {
   };
 
   return (
-    <section className="card mt-4">
-      <h2 className="text-xl font-bold">Edit Post</h2>
+    <section className="card mb-8">
+      <h2 className="text-xl font-bold">Edit Album</h2>
       <form onSubmit={handleSubmit}>
+        <label className="label">Name</label>
+        <input className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+
         <label className="label">Description</label>
-        <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
 
         <label className="label">Hashtags</label>
         <input className="input" type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
@@ -37,4 +42,4 @@ function EditPost({ post, onSaved }) {
   );
 }
 
-export default EditPost;
+export default EditAlbum;

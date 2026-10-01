@@ -1,13 +1,16 @@
-import PostPreview from './PostPreview';
+import PostList from './PostList';
+import AlbumList from './AlbumList';
 
-function Feed({ title, posts }) {
+function Feed({ posts, albums, emptyMessage }) {
+  if (posts.length === 0 && albums.length === 0) {
+    return <p className="text-muted">{emptyMessage}</p>;
+  }
+
   return (
-    <section>
-      <h2>{title}</h2>
-      {posts.map((post) => (
-        <PostPreview key={post.post_id} post={post} />
-      ))}
-    </section>
+    <>
+      <PostList title="Posts" posts={posts} />
+      <AlbumList title="Albums" albums={albums} />
+    </>
   );
 }
 

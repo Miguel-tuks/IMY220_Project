@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
+import PostImage from './PostImage';
+import Hashtags from './Hashtags';
 
 function PostPreview({ post }) {
   return (
-    <article>
-      <h4>
-        <Link to={'/post/' + post.post_id}>{post.caption}</Link>
-      </h4>
-      <img src={post.image_url} alt={post.caption} />
-      <p>
-        By <Link to={'/profile/' + post.user_id}>{post.username}</Link>
-      </p>
+    <article className="overflow-hidden rounded-xl border border-line bg-card shadow-sm">
+      <Link to={'/post/' + post._id}>
+        <PostImage imageUrl={post.image_url} description={post.description} />
+      </Link>
+      <div className="p-4">
+        <Link to={'/profile/' + post.user_id} className="link text-sm">@{post.username}</Link>
+        <p className="mt-1">{post.description}</p>
+        <Hashtags hashtags={post.hashtags} />
+      </div>
     </article>
   );
 }
