@@ -1,19 +1,21 @@
 import { Link } from 'react-router-dom';
-import PostImage from './PostImage';
+import { formatDate } from '../api';
+import Avatar from './Avatar';
 import Hashtags from './Hashtags';
 
-function Post({ post }) {
+function Post({ post, children }) {
   return (
-    <article className="overflow-hidden rounded-xl border border-line bg-card shadow-sm">
-      <PostImage imageUrl={post.image_url} description={post.description} />
-      <div className="p-5">
-        <p className="text-sm text-muted">
-          Posted by <Link to={'/profile/' + post.user_id} className="link">@{post.username}</Link> on{' '}
-          {new Date(post.created_at).toLocaleDateString()}
-        </p>
-        <p className="mt-2 text-lg">{post.description}</p>
-        <Hashtags hashtags={post.hashtags} />
+    <article className="card">
+      <div className="flex items-center gap-3">
+        <Avatar name={post.username} />
+        <div>
+          <Link to={'/profile/' + post.user_id} className="font-bold hover:text-wash">@{post.username}</Link>
+          <p className="meta">{formatDate(post.created_at)}</p>
+        </div>
       </div>
+      <p className="mt-4 text-lg">{post.description}</p>
+      <Hashtags hashtags={post.hashtags} />
+      <div className="mt-5 space-y-5 border-t border-edge pt-5">{children}</div>
     </article>
   );
 }

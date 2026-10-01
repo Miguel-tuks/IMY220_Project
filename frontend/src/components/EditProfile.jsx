@@ -31,22 +31,28 @@ function EditProfile({ profile, onSaved }) {
 
   return (
     <section className="card">
-      <h2 className="text-xl font-bold">Edit Profile</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="label">Username</label>
-        <input className="input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-
-        <label className="label">Email</label>
-        <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-
-        <label className="label">Bio</label>
-        <textarea className="input" value={bio} onChange={(e) => setBio(e.target.value)} />
-
-        <label className="label">Profile image URL</label>
-        <input className="input" type="url" value={profileImage} onChange={(e) => setProfileImage(e.target.value)} />
-
-        <p className="error">{error}</p>
-        <button type="submit" className="btn mt-2">Save</button>
+      <h2 className="text-2xl">Edit profile</h2>
+      <form onSubmit={handleSubmit} className="grid gap-x-6 md:grid-cols-2">
+        <div>
+          <label className="label">Username</label>
+          <input className="input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+        </div>
+        <div>
+          <label className="label">Email</label>
+          <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div>
+          <label className="label">Bio</label>
+          <textarea className="input" value={bio} onChange={(e) => setBio(e.target.value)} />
+        </div>
+        <div>
+          <label className="label">Profile image URL</label>
+          <input className="input" type="url" value={profileImage} onChange={(e) => setProfileImage(e.target.value)} />
+        </div>
+        <div>
+          <p className="error">{error}</p>
+          <button type="submit" className="btn mt-2">Save</button>
+        </div>
       </form>
     </section>
   );

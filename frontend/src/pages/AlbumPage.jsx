@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { apiRequest } from '../api';
+import { apiRequest, frameNumber } from '../api';
 import EditAlbum from '../components/EditAlbum';
 import Hashtags from '../components/Hashtags';
-import PostPreview from '../components/PostPreview';
 
 function AlbumPage({ user }) {
   const { id } = useParams();
@@ -23,10 +22,11 @@ function AlbumPage({ user }) {
   }, [id]);
 
   if (!album) {
-    return <p className="text-muted">{error || 'Loading...'}</p>;
+    return <p className="text-paper/60">{error || 'Loading...'}</p>;
   }
 
   const canEdit = album.user_id === user._id || user.is_admin;
+  const count = album.posts.length;
 
   const handleSaved = () => {
     setEditing(false);
@@ -34,7 +34,7 @@ function AlbumPage({ user }) {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Delete this album?')) {
+    if (!window.confirm('Delete this roll?')) {
       return;
     }
 
@@ -49,41 +49,49 @@ function AlbumPage({ user }) {
 
   return (
     <>
-      <section className="card mb-8 border-l-4 border-l-film">
-        <h1 className="text-4xl font-bold">{album.name}</h1>
-        <p className="mt-1 text-sm text-muted">
-          by <Link to={'/profile/' + album.user_id} className="link">@{album.username}</Link> · {album.posts.length} {album.posts.length === 1 ? 'photo' : 'photos'}
+      <section className="card mb-8">
+        <p className="meta">Roll · {count} {count === 1 ? 'shot' : 'shots'}</p>
+        <h1 className="mt-2 text-5xl">{album.name}</h1>
+        <p className="mt-2 text-sm text-paper/60">
+          by <Link to={'/profile/' + album.user_id} className="link">@{album.username}</Link>
         </p>
-        <p className="mt-3">{album.description}</p>
+        <p className="mt-3 text-paper/80">{album.description}</p>
         <Hashtags hashtags={album.hashtags} />
         {canEdit && (
-          <div className="mt-4 flex gap-2">
+          <div className="mt-5 flex gap-2">
             <button className="btn-outline" onClick={() => setEditing(!editing)}>
-              {editing ? 'Cancel' : 'Edit album'}
+              {editing ? 'Cancel' : 'Edit roll'}
             </button>
-            <button className="btn-danger" onClick={handleDelete}>Delete album</button>
+            <button className="btn-danger" onClick={handleDelete}>Delete roll</button>
           </div>
         )}
       </section>
 
       {editing && <EditAlbum album={album} onSaved={handleSaved} />}
 
-      <h2 className="mb-4 text-2xl font-bold">Photos</h2>
-      {album.posts.length === 0 && (
-        <p className="text-muted">No photos yet. Open any post and use "Add to Album".</p>
-      )}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {album.posts.map((post) => (
-          <div key={post._id}>
-            <PostPreview post={post} />
-            {canEdit && (
-              <button className="btn-outline mt-2 w-full" onClick={() => removePost(post._id)}>
-                Remove from album
-              </button>
-            )}
+      {count === 0 ? (
+        <p className="text-paper/60">No shots on this roll yet. Open any shot and use "Add to roll".</p>
+      ) : (
+        <div className="border border-edge bg-ink">
+          <div className="sprockets" />
+          <div className="grid grid-cols-2 gap-3 p-3 md:grid-cols-4">
+            {album.posts.map((post, index) => (
+              <div key={post._id}>
+                <Link to={'/post/' + post._id} className="relative block border border-edge hover:border-paper/40">
+                  <img src={post.image_url} alt={post.description} className="aspect-square w-full bg-edge object-cover" />
+                  <span className="absolute bottom-1 left-2 font-mono text-[10px] text-paper">{frameNumber(index)}</span>
+                </Link>
+                {canEdit && (
+                  <button className="btn-outline mt-2 w-full" onClick={() => removePost(post._id)}>
+                    Remove from roll
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+          <div className="sprockets" />
+        </div>
+      )}
     </>
   );
 }

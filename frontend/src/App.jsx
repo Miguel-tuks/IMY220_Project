@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Header from './components/Header';
 import SplashPage from './pages/SplashPage';
 import HomePage from './pages/HomePage';
@@ -7,6 +7,11 @@ import ProfilePage from './pages/ProfilePage';
 import PostPage from './pages/PostPage';
 import AlbumPage from './pages/AlbumPage';
 import AdminPage from './pages/AdminPage';
+
+function ProfileRoute({ user, setUser }) {
+  const { id } = useParams();
+  return <ProfilePage key={id} user={user} setUser={setUser} />;
+}
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -35,7 +40,7 @@ function App() {
       <main className="mx-auto max-w-6xl px-4 py-8">
         <Routes>
           <Route path="/home" element={<HomePage user={user} />} />
-          <Route path="/profile/:id" element={<ProfilePage user={user} setUser={saveUser} />} />
+          <Route path="/profile/:id" element={<ProfileRoute user={user} setUser={saveUser} />} />
           <Route path="/post/:id" element={<PostPage user={user} />} />
           <Route path="/album/:id" element={<AlbumPage user={user} />} />
           {user.is_admin && <Route path="/admin" element={<AdminPage user={user} />} />}

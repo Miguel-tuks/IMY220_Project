@@ -37,19 +37,16 @@ function SignInForm({ onLogin }) {
   };
 
   return (
-    <section className="card">
-      <h2 className="text-2xl font-bold">Sign In</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="label">Email</label>
-        <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <form onSubmit={handleSubmit}>
+      <label className="label">Email</label>
+      <input className="input" type="email" placeholder="you@studio.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-        <label className="label">Password</label>
-        <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <label className="label">Password</label>
+      <input className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
-        <p className="error">{error}</p>
-        <button type="submit" className="btn mt-3 w-full">Sign In</button>
-      </form>
-    </section>
+      <p className="error">{error}</p>
+      <button type="submit" className="btn mt-3 w-full py-3">Log in</button>
+    </form>
   );
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { apiRequest } from '../api';
-import SearchInput from '../components/SearchInput';
+import Avatar from '../components/Avatar';
 import Feed from '../components/Feed';
 
 function HomePage({ user }) {
@@ -15,27 +16,31 @@ function HomePage({ user }) {
       .catch((err) => setError(err.message));
   }, [feedType, user._id]);
 
-  const tabClass = (type) => (feedType === type ? 'btn' : 'btn-outline');
+  const tabClass = (type) => (feedType === type ? 'tab tab-active' : 'tab');
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
       <section>
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">{feedType === 'local' ? 'Friends Feed' : 'Global Feed'}</h1>
-          <div className="flex gap-2">
-            <button className={tabClass('local')} onClick={() => setFeedType('local')}>Local</button>
-            <button className={tabClass('global')} onClick={() => setFeedType('global')}>Global</button>
-          </div>
+        <div className="mb-6 flex">
+          <button className={tabClass('local')} onClick={() => setFeedType('local')}>Contacts</button>
+          <button className={tabClass('global')} onClick={() => setFeedType('global')}>Everyone</button>
         </div>
         <p className="error">{error}</p>
         <Feed
           posts={feed.posts}
           albums={feed.albums}
-          emptyMessage={feedType === 'local' ? 'Add some friends to see their posts here.' : 'No posts yet.'}
+          layout={feedType === 'local' ? 'list' : 'grid'}
+          emptyMessage={feedType === 'local' ? 'Add some contacts to see their shots and rolls here.' : 'Nothing on Grain yet.'}
         />
       </section>
+
       <aside>
-        <SearchInput />
+        <section className="card flex flex-col items-center text-center">
+          <Avatar name={user.username} image={user.profile_image} size="h-20 w-20" />
+          <p className="mt-3 font-bold">{user.username}</p>
+          <p className="meta">@{user.username}</p>
+          <Link to={'/profile/' + user._id} className="btn-outline mt-4">View profile</Link>
+        </section>
       </aside>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { apiRequest } from '../api';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { apiRequest, formatDate } from '../api';
 import Post from '../components/Post';
 import EditPost from '../components/EditPost';
 import Comments from '../components/Comments';
@@ -25,7 +25,7 @@ function PostPage({ user }) {
   }, [id]);
 
   if (!post) {
-    return <p className="text-muted">{error || 'Loading...'}</p>;
+    return <p className="text-paper/60">{error || 'Loading...'}</p>;
   }
 
   const canEdit = post.user_id === user._id || user.is_admin;
@@ -36,7 +36,7 @@ function PostPage({ user }) {
   };
 
   const handleDelete = async () => {
-    if (!window.confirm('Delete this post?')) {
+    if (!window.confirm('Delete this shot?')) {
       return;
     }
 
@@ -45,26 +45,32 @@ function PostPage({ user }) {
   };
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-      <section>
-        <Post post={post} />
-        {canEdit && (
-          <div className="mt-4 flex gap-2">
-            <button className="btn-outline" onClick={() => setEditing(!editing)}>
-              {editing ? 'Cancel' : 'Edit post'}
-            </button>
-            <button className="btn-danger" onClick={handleDelete}>Delete post</button>
-          </div>
-        )}
-        {editing && <EditPost post={post} onSaved={handleSaved} />}
-      </section>
+    <>
+      <Link to="/home" className="link font-mono text-xs uppercase tracking-[0.15em]">← Back to feed</Link>
+      <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_400px]">
+        <section>
+          <img src={post.image_url} alt={post.description} className="w-full border border-edge bg-edge object-contain" />
+          <p className="meta mt-3">Uploaded {formatDate(post.created_at)}</p>
+        </section>
 
-      <aside className="space-y-6">
-        <Comments user={user} postId={id} />
-        <AddToAlbum user={user} postId={id} />
-        {post.user_id !== user._id && <ReportPost user={user} postId={id} />}
-      </aside>
-    </div>
+        <aside className="space-y-6">
+          <Post post={post}>
+            {canEdit && (
+              <div className="flex gap-2">
+                <button className="btn-outline" onClick={() => setEditing(!editing)}>
+                  {editing ? 'Cancel' : 'Edit'}
+                </button>
+                <button className="btn-danger" onClick={handleDelete}>Delete</button>
+              </div>
+            )}
+            <AddToAlbum user={user} postId={id} />
+            {post.user_id !== user._id && <ReportPost user={user} postId={id} />}
+          </Post>
+          {editing && <EditPost post={post} onSaved={handleSaved} />}
+          <Comments user={user} postId={id} />
+        </aside>
+      </div>
+    </>
   );
 }
 

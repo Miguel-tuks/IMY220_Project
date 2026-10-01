@@ -21,8 +21,8 @@ function EditPost({ post, onSaved }) {
   };
 
   return (
-    <section className="card mt-4">
-      <h2 className="text-xl font-bold">Edit Post</h2>
+    <section className="card">
+      <h2 className="text-2xl">Edit shot</h2>
       <form onSubmit={handleSubmit}>
         <label className="label">Description</label>
         <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} required />

@@ -3,9 +3,9 @@ import ProfilePreview from './ProfilePreview';
 function Friend({ friends }) {
   return (
     <section className="card">
-      <h2 className="text-xl font-bold">Friends</h2>
-      {friends.length === 0 && <p className="mt-2 text-sm text-muted">No friends yet.</p>}
-      <div className="mt-3 space-y-2">
+      <p className="label mt-0">Contacts</p>
+      {friends.length === 0 && <p className="text-sm text-paper/60">No contacts yet.</p>}
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {friends.map((friend) => (
           <ProfilePreview key={friend._id} profile={friend} />
         ))}

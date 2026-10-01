@@ -24,19 +24,24 @@ function EditAlbum({ album, onSaved }) {
 
   return (
     <section className="card mb-8">
-      <h2 className="text-xl font-bold">Edit Album</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="label">Name</label>
-        <input className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-
-        <label className="label">Description</label>
-        <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
-
-        <label className="label">Hashtags</label>
-        <input className="input" type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
-
-        <p className="error">{error}</p>
-        <button type="submit" className="btn mt-2">Save</button>
+      <h2 className="text-2xl">Edit roll</h2>
+      <form onSubmit={handleSubmit} className="grid gap-x-6 md:grid-cols-2">
+        <div>
+          <label className="label">Name</label>
+          <input className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+        </div>
+        <div>
+          <label className="label">Hashtags</label>
+          <input className="input" type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
+        </div>
+        <div className="md:col-span-2">
+          <label className="label">Description</label>
+          <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
+        </div>
+        <div>
+          <p className="error">{error}</p>
+          <button type="submit" className="btn mt-2">Save</button>
+        </div>
       </form>
     </section>
   );

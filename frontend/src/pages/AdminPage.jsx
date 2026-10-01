@@ -27,7 +27,7 @@ function AdminPage({ user }) {
   };
 
   const deletePost = async (postId) => {
-    if (!window.confirm('Delete this post?')) {
+    if (!window.confirm('Delete this shot?')) {
       return;
     }
     await apiRequest('/posts/' + postId, 'DELETE');
@@ -40,7 +40,7 @@ function AdminPage({ user }) {
   };
 
   const deleteUser = async (userId) => {
-    if (!window.confirm('Delete this user and all their posts?')) {
+    if (!window.confirm('Delete this user and all their shots?')) {
       return;
     }
     await apiRequest('/users/' + userId, 'DELETE');
@@ -49,21 +49,21 @@ function AdminPage({ user }) {
 
   return (
     <>
-      <h1 className="mb-6 text-4xl font-bold">Admin</h1>
+      <h1 className="mb-6 text-5xl">Admin</h1>
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="card lg:col-span-2">
-          <h2 className="text-xl font-bold">Reported Posts</h2>
-          {reports.length === 0 && <p className="mt-2 text-sm text-muted">No reports.</p>}
-          <div className="mt-3 space-y-3">
+          <p className="label mt-0">Reported shots</p>
+          {reports.length === 0 && <p className="text-sm text-paper/60">No reports.</p>}
+          <div className="space-y-3">
             {reports.map((report) => (
-              <div key={report._id} className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
+              <div key={report._id} className="flex flex-wrap items-center justify-between gap-2 border-b border-edge pb-3">
                 <p>
-                  <span className="font-medium text-danger">{report.reason}</span>
-                  <span className="text-sm text-muted"> · reported by @{report.username}</span>
+                  <span className="font-bold text-safelight">{report.reason}</span>
+                  <span className="text-sm text-paper/60"> · reported by @{report.username}</span>
                 </p>
                 <div className="flex gap-2">
-                  <Link to={'/post/' + report.post_id} className="btn-outline">View post</Link>
-                  <button className="btn-danger" onClick={() => deletePost(report.post_id)}>Delete post</button>
+                  <Link to={'/post/' + report.post_id} className="btn-outline">View shot</Link>
+                  <button className="btn-danger" onClick={() => deletePost(report.post_id)}>Delete shot</button>
                   <button className="btn-outline" onClick={() => dismissReport(report._id)}>Dismiss</button>
                 </div>
               </div>
@@ -72,12 +72,12 @@ function AdminPage({ user }) {
         </section>
 
         <section className="card">
-          <h2 className="text-xl font-bold">Report Reasons</h2>
-          <ul className="mt-3 list-inside list-disc text-sm">
+          <p className="label mt-0">Report reasons</p>
+          <div className="flex flex-wrap gap-2">
             {reasons.map((item) => (
-              <li key={item._id}>{item.reason}</li>
+              <span key={item._id} className="tag">{item.reason}</span>
             ))}
-          </ul>
+          </div>
           <form onSubmit={addReason} className="mt-4 flex gap-2">
             <input
               className="input"
@@ -92,8 +92,8 @@ function AdminPage({ user }) {
         </section>
 
         <section className="card">
-          <h2 className="text-xl font-bold">Users</h2>
-          <div className="mt-3 space-y-2">
+          <p className="label mt-0">Users</p>
+          <div className="space-y-2">
             {users.map((item) => (
               <div key={item._id} className="flex items-center justify-between">
                 <ProfilePreview profile={item} />

@@ -14,27 +14,27 @@ function AddToAlbum({ user, postId }) {
     event.preventDefault();
     await apiRequest('/albums/' + albumId + '/posts', 'POST', { post_id: postId });
     setAlbumId('');
-    setMessage('Added to album');
+    setMessage('Added to roll');
   };
 
   return (
-    <section className="card">
-      <h2 className="text-xl font-bold">Add to Album</h2>
+    <div>
+      <p className="label mt-0">Add to roll</p>
       {albums.length === 0 ? (
-        <p className="mt-2 text-sm text-muted">You have no albums yet. Create one on your profile.</p>
+        <p className="text-sm text-paper/60">You have no rolls yet. Create one on your profile.</p>
       ) : (
-        <form onSubmit={handleSubmit} className="mt-3 flex gap-2">
+        <form onSubmit={handleSubmit} className="flex gap-2">
           <select className="input" value={albumId} onChange={(e) => setAlbumId(e.target.value)} required>
-            <option value="">Choose an album</option>
+            <option value="">Choose a roll</option>
             {albums.map((album) => (
               <option key={album._id} value={album._id}>{album.name}</option>
             ))}
           </select>
-          <button type="submit" className="btn">Add</button>
+          <button type="submit" className="btn-outline">Add</button>
         </form>
       )}
       <p className="success">{message}</p>
-    </section>
+    </div>
   );
 }
 

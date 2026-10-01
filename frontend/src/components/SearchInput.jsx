@@ -14,26 +14,32 @@ function SearchInput() {
     setSearched(true);
   };
 
+  const closeResults = () => {
+    setResults([]);
+    setSearched(false);
+    setSearchTerm('');
+  };
+
   return (
-    <section className="card">
-      <h2 className="text-xl font-bold">Find people</h2>
-      <form onSubmit={handleSubmit} className="mt-3 flex gap-2">
+    <div className="relative md:max-w-sm">
+      <form onSubmit={handleSubmit}>
         <input
           className="input"
           type="search"
-          placeholder="Search usernames"
+          placeholder="Search people, then press Enter"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button type="submit" className="btn">Go</button>
       </form>
-      <div className="mt-3 space-y-2">
-        {searched && results.length === 0 && <p className="text-sm text-muted">No users found.</p>}
-        {results.map((result) => (
-          <ProfilePreview key={result._id} profile={result} />
-        ))}
-      </div>
-    </section>
+      {searched && (
+        <div className="card absolute top-full right-0 left-0 z-10 mt-2 space-y-1 p-3" onClick={closeResults}>
+          {results.length === 0 && <p className="text-sm text-paper/60">No people found.</p>}
+          {results.map((result) => (
+            <ProfilePreview key={result._id} profile={result} />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

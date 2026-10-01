@@ -27,3 +27,12 @@ export function parseHashtags(text) {
     .filter((tag) => tag !== '');
   return [...new Set(tags)];
 }
+
+export function formatDate(date) {
+  return new Date(date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+export function frameNumber(index) {
+  const number = String(index + 1).padStart(2, '0');
+  return index % 2 === 0 ? number + 'A' : number;
+}

@@ -49,25 +49,22 @@ function SignUpForm({ onLogin }) {
   };
 
   return (
-    <section className="card">
-      <h2 className="text-2xl font-bold">Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="label">Username</label>
-        <input className="input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+    <form onSubmit={handleSubmit}>
+      <label className="label">Email</label>
+      <input className="input" type="email" placeholder="you@studio.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-        <label className="label">Email</label>
-        <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <label className="label">Username</label>
+      <input className="input" type="text" placeholder="yourhandle" value={username} onChange={(e) => setUsername(e.target.value)} required />
 
-        <label className="label">Password</label>
-        <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <label className="label">Password</label>
+      <input className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
-        <label className="label">Confirm Password</label>
-        <input className="input" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+      <label className="label">Confirm password</label>
+      <input className="input" type="password" placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
 
-        <p className="error">{error}</p>
-        <button type="submit" className="btn mt-3 w-full">Sign Up</button>
-      </form>
-    </section>
+      <p className="error">{error}</p>
+      <button type="submit" className="btn mt-3 w-full py-3">Load your first roll</button>
+    </form>
   );
 }
 

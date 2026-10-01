@@ -14,13 +14,13 @@ function ReportPost({ user, postId }) {
     event.preventDefault();
     await apiRequest('/reports', 'POST', { post_id: postId, user_id: user._id, reason });
     setReason('');
-    setMessage('Thanks, this post has been reported.');
+    setMessage('Thanks, this shot has been reported.');
   };
 
   return (
-    <section className="card">
-      <h2 className="text-xl font-bold">Report Post</h2>
-      <form onSubmit={handleSubmit} className="mt-3 flex gap-2">
+    <div>
+      <p className="label mt-0">Report shot</p>
+      <form onSubmit={handleSubmit} className="flex gap-2">
         <select className="input" value={reason} onChange={(e) => setReason(e.target.value)} required>
           <option value="">Choose a reason</option>
           {reasons.map((item) => (
@@ -30,7 +30,7 @@ function ReportPost({ user, postId }) {
         <button type="submit" className="btn-danger">Report</button>
       </form>
       <p className="success">{message}</p>
-    </section>
+    </div>
   );
 }
 

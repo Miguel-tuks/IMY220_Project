@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { apiRequest } from '../api';
+import { apiRequest, formatDate } from '../api';
+import Avatar from './Avatar';
 
 function Comments({ user, postId }) {
   const [comments, setComments] = useState([]);
@@ -28,31 +29,42 @@ function Comments({ user, postId }) {
 
   return (
     <section className="card">
-      <h2 className="text-xl font-bold">Comments</h2>
-      {comments.length === 0 && <p className="mt-2 text-sm text-muted">No comments yet.</p>}
-      <div className="mt-3 space-y-3">
-        {comments.map((comment) => (
-          <div key={comment._id} className="border-b border-line pb-2">
-            <Link to={'/profile/' + comment.user_id} className="link text-sm">@{comment.username}</Link>
-            <p>{comment.content}</p>
-            {(comment.user_id === user._id || user.is_admin) && (
-              <button className="cursor-pointer text-xs text-danger hover:underline" onClick={() => handleDelete(comment._id)}>
-                Delete
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-      <form onSubmit={handleSubmit} className="mt-4">
-        <textarea
+      <p className="label mt-0">
+        {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
+      </p>
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
           className="input"
-          placeholder="Write a comment..."
+          type="text"
+          placeholder="Write a comment…"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
         />
-        <button type="submit" className="btn mt-2">Comment</button>
+        <button type="submit" className="btn">Post</button>
       </form>
+      <div className="mt-5 space-y-4">
+        {comments.map((comment) => (
+          <div key={comment._id} className="flex gap-3">
+            <Avatar name={comment.username} size="h-8 w-8" />
+            <div className="flex-1">
+              <p className="text-sm">
+                <Link to={'/profile/' + comment.user_id} className="font-bold hover:text-wash">{comment.username}</Link>
+                <span className="meta ml-2">{formatDate(comment.created_at)}</span>
+              </p>
+              <p className="text-sm text-paper/90">{comment.content}</p>
+              {(comment.user_id === user._id || user.is_admin) && (
+                <button
+                  className="mt-1 cursor-pointer font-mono text-[11px] uppercase tracking-[0.15em] text-safelight hover:underline"
+                  onClick={() => handleDelete(comment._id)}
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

@@ -1,16 +1,32 @@
-function Profile({ profile, children }) {
+import Avatar from './Avatar';
+
+function Profile({ profile, shotCount, rollCount, children }) {
+  const stats = [
+    { label: 'Shots', value: shotCount },
+    { label: 'Rolls', value: rollCount },
+    { label: 'Contacts', value: profile.friends.length }
+  ];
+
   return (
-    <section className="card text-center">
-      <img
-        src={profile.profile_image}
-        alt={profile.username}
-        className="mx-auto h-28 w-28 rounded-full border-4 border-paper bg-line object-cover"
-      />
-      <h1 className="mt-3 text-3xl font-bold">@{profile.username}</h1>
-      {profile.is_admin && <p className="text-sm font-medium text-film">Administrator</p>}
-      <p className="mt-2 text-muted">{profile.bio}</p>
-      <p className="mt-2 text-sm text-muted">{profile.friends.length} friends</p>
-      <div className="mt-4 flex flex-wrap justify-center gap-2">{children}</div>
+    <section className="card flex flex-col gap-6 md:flex-row md:items-start">
+      <Avatar name={profile.username} image={profile.profile_image} size="h-28 w-28" />
+      <div className="flex-1">
+        <h1 className="text-5xl">{profile.username}</h1>
+        <p className="meta mt-1">
+          @{profile.username}
+          {profile.is_admin && ' · Administrator'}
+        </p>
+        <p className="mt-3 text-paper/80">{profile.bio}</p>
+        <div className="mt-5 flex flex-wrap gap-2">{children}</div>
+      </div>
+      <div className="flex gap-8 border-edge md:flex-col md:gap-4 md:border-l md:pl-8">
+        {stats.map((stat) => (
+          <div key={stat.label} className="text-center">
+            <p className="font-display text-3xl font-semibold">{stat.value}</p>
+            <p className="meta">{stat.label}</p>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
