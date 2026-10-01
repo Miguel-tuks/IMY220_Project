@@ -1,5 +1,65 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Fraunces", serif;
+  --color-paper: #f4efe6;
+  --color-card: #fffaf3;
+  --color-ink: #2b2420;
+  --color-muted: #7d7065;
+  --color-line: #e3d7c5;
+  --color-film: #c4572e;
+  --color-film-dark: #9e4322;
+  --color-moss: #5d6b4a;
+  --color-danger: #b03a2e;
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-ink min-h-screen;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-ink;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-line bg-card p-5 shadow-sm;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-line bg-white px-3 py-2 focus:border-film focus:outline-none;
+  }
+
+  .label {
+    @apply mt-3 mb-1 block text-sm font-medium text-muted;
+  }
+
+  .btn {
+    @apply cursor-pointer rounded-lg bg-film px-4 py-2 text-sm font-medium text-white hover:bg-film-dark;
+  }
+
+  .btn-outline {
+    @apply cursor-pointer rounded-lg border border-film px-4 py-2 text-sm font-medium text-film hover:bg-film hover:text-white;
+  }
+
+  .btn-danger {
+    @apply cursor-pointer rounded-lg bg-danger px-4 py-2 text-sm font-medium text-white hover:opacity-90;
+  }
+
+  .link {
+    @apply font-medium text-film hover:underline;
+  }
+
+  .error {
+    @apply mt-2 text-sm text-danger;
+  }
+
+  .success {
+    @apply mt-2 text-sm text-moss;
+  }
 }
