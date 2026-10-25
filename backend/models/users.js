@@ -1,4 +1,4 @@
-const { db, toId } = require('../db');
+const { db, toId, searchFilter } = require('../db');
 
 const users = db.collection('users');
 const hidePassword = { projection: { password: 0 } };
@@ -45,8 +45,7 @@ async function getProfile(id) {
 }
 
 async function searchUsers(search) {
-  const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const filter = { username: { $regex: safeSearch, $options: 'i' } };
+  const filter = searchFilter(search, ['username', 'display_name', 'email']);
   return users.find(filter, previewFields).sort({ username: 1 }).toArray();
 }
 

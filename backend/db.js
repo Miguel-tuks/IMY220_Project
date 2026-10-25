@@ -18,5 +18,12 @@ async function addUsernames(items) {
     return { ...item, username: owner ? owner.username : 'Unknown user' };
   });
 }
+function searchFilter(text, fields) {
+  if (text.startsWith('#')) {
+    return { hashtags: text.slice(1).toLowerCase() };
+  }
 
-module.exports = { client, db, toId, addUsernames };
+  const pattern = { $regex: text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), $options: 'i' };
+  return { $or: fields.map((field) => ({ [field]: pattern })) };
+}
+module.exports = { client, db, toId, addUsernames, searchFilter };

@@ -1,4 +1,4 @@
-const { db, toId, addUsernames } = require('../db');
+const { db, toId, addUsernames, searchFilter } = require('../db');
 
 const posts = db.collection('posts');
 const newestFirst = { created_at: -1 };
@@ -48,6 +48,11 @@ async function getPostsByUsers(userIds) {
   return addUsernames(userPosts);
 }
 
+async function searchPosts(search) {
+  const foundPosts = await posts.find(searchFilter(search, ['description', 'hashtags'])).sort(newestFirst).toArray();
+  return addUsernames(foundPosts);
+}
+
 async function getPostsByIds(postIds) {
   const foundPosts = await posts.find({ _id: { $in: postIds } }).sort(newestFirst).toArray();
   return addUsernames(foundPosts);
@@ -69,6 +74,7 @@ module.exports = {
   getPostById,
   getAllPosts,
   getPostsByUsers,
+  searchPosts,
   getPostsByIds,
   updatePost,
   deletePost

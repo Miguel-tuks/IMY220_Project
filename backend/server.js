@@ -71,6 +71,17 @@ app.get('/api/me', async (req, res) => {
   res.json({ user });
 });
 
+app.get('/api/search', async (req, res) => {
+  const query = (req.query.q || '').trim();
+  if (!query) return res.json({ users: [], posts: [], albums: [] });
+
+  res.json({
+    users: await users.searchUsers(query),
+    posts: await posts.searchPosts(query),
+    albums: await albums.searchAlbums(query)
+  });
+});
+
 app.get('/api/users', async (req, res) => {
   res.json(await users.searchUsers(req.query.search || ''));
 });

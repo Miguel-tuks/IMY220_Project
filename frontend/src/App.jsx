@@ -8,6 +8,7 @@ import ProfilePage from './pages/ProfilePage';
 import PostPage from './pages/PostPage';
 import AlbumPage from './pages/AlbumPage';
 import AdminPage from './pages/AdminPage';
+import SearchPage from './pages/SearchPage';
 
 function ProfileRoute({ user, setUser }) {
   const { id } = useParams();
@@ -47,6 +48,7 @@ function App() {
           <Route path="/profile/:id" element={<ProfileRoute user={user} setUser={setUser} />} />
           <Route path="/post/:id" element={<PostPage user={user} />} />
           <Route path="/album/:id" element={<AlbumPage user={user} />} />
+          <Route path="/search" element={<SearchPage />} />
           {user.is_admin && <Route path="/admin" element={<AdminPage user={user} />} />}
           <Route path="*" element={<Navigate to="/home" />} />
         </Routes>

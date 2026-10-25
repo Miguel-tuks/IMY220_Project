@@ -1,4 +1,4 @@
-const { db, toId, addUsernames } = require('../db');
+const { db, toId, addUsernames, searchFilter } = require('../db');
 
 const albums = db.collection('albums');
 const newestFirst = { created_at: -1 };
@@ -45,6 +45,11 @@ async function getAlbumsByUsers(userIds) {
   return addUsernames(await addCoverImages(userAlbums));
 }
 
+async function searchAlbums(search) {
+  const foundAlbums = await albums.find(searchFilter(search, ['name', 'description', 'hashtags'])).sort(newestFirst).toArray();
+  return addUsernames(await addCoverImages(foundAlbums));
+}
+
 async function updateAlbum(id, name, description, hashtags) {
   await albums.updateOne({ _id: toId(id) }, { $set: { name, description, hashtags } });
   return getAlbumById(id);
@@ -78,6 +83,7 @@ module.exports = {
   getAlbumById,
   getAllAlbums,
   getAlbumsByUsers,
+  searchAlbums,
   updateAlbum,
   deleteAlbum,
   deleteAlbumsByUser,
