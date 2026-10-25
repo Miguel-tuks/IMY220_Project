@@ -1,4 +1,4 @@
-IMY 220 Project 2026 - Deliverable 2
+IMY 220 Project 2026 - Final submission
 Miguel De Freitas u23744512
 
 GitHub Repository:

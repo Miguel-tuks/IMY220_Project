@@ -124,6 +124,12 @@ app.post('/api/users/:id/friends', async (req, res) => {
   res.json({ message: 'Friend request accepted' });
 });
 
+
+app.delete('/api/users/:id/requests/:fromId', async (req, res) => {
+  await users.declineFriendRequest(req.params.id, req.params.fromId);
+  res.json({ message: 'Friend request declined' });
+});
+
 app.delete('/api/users/:id/friends/:friendId', async (req, res) => {
   await users.removeFriend(req.params.id, req.params.friendId);
   res.json({ message: 'Friend removed' });

@@ -1,6 +1,6 @@
 import ProfilePreview from './ProfilePreview';
 
-function FriendRequests({ requests, onAccept }) {
+function FriendRequests({ requests, onAccept, onDecline }) {
   return (
     <section className="card">
       <p className="label mt-0">Contact requests</p>
@@ -9,7 +9,10 @@ function FriendRequests({ requests, onAccept }) {
         {requests.map((request) => (
           <div key={request._id} className="flex items-center justify-between">
             <ProfilePreview profile={request} />
-            <button className="btn" onClick={() => onAccept(request._id)}>Accept</button>
+            <div className="flex gap-2">
+              <button className="btn" onClick={() => onAccept(request._id)}>Accept</button>
+              <button className="btn-outline" onClick={() => onDecline(request._id)}>Decline</button>
+            </div>
           </div>
         ))}
       </div>

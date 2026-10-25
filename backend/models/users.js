@@ -85,6 +85,10 @@ async function removeFriend(userId, friendId) {
   await users.updateOne({ _id: toId(friendId) }, { $pull: { friends: toId(userId) } });
 }
 
+async function declineFriendRequest(userId, fromUserId) {
+  await users.updateOne({ _id: toId(userId) }, { $pull: { friend_requests: toId(fromUserId) } });
+}
+
 module.exports = {
   createUser,
   findExistingUser,
@@ -96,5 +100,6 @@ module.exports = {
   deleteUser,
   sendFriendRequest,
   acceptFriendRequest,
+  declineFriendRequest,
   removeFriend
 };

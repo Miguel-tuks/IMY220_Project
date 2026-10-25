@@ -14,6 +14,7 @@ function ProfilePage({ user, setUser }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
+  const [myRequests, setMyRequests] = useState([]);
   const [posts, setPosts] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [editing, setEditing] = useState(false);
@@ -27,6 +28,7 @@ function ProfilePage({ user, setUser }) {
     apiRequest('/users/' + id)
       .then((data) => setProfile(data))
       .catch((err) => setError(err.message));
+    apiRequest('/me').then((data) => setMyRequests(data.user ? data.user.friend_requests : []));
     apiRequest('/posts/user/' + id).then((data) => setPosts(data));
     apiRequest('/albums/user/' + id).then((data) => setAlbums(data));
   };
@@ -41,11 +43,21 @@ function ProfilePage({ user, setUser }) {
 
   const isFriend = profile.friends.some((friend) => friend._id === user._id);
   const requestSent = profile.friend_requests.some((request) => request._id === user._id);
+  const requestReceived = myRequests.includes(id);
+  const canSeeAll = isOwnProfile || isFriend || user.is_admin;
+
+  let status = 'Not connected';
+  if (isFriend) status = 'Contacts';
+  else if (requestReceived) status = 'Wants to connect with you';
+  else if (requestSent) status = 'Request pending';
 
   const friendAction = async (path, method, body) => {
     await apiRequest(path, method, body);
     loadProfile();
   };
+
+  const acceptRequest = (fromId) => friendAction('/users/' + user._id + '/friends', 'POST', { friend_id: fromId });
+  const declineRequest = (fromId) => friendAction('/users/' + user._id + '/requests/' + fromId, 'DELETE');
 
   const handleSaved = (updatedUser) => {
     setEditing(false);
@@ -63,6 +75,7 @@ function ProfilePage({ user, setUser }) {
     await apiRequest('/users/' + id, 'DELETE');
 
     if (isOwnProfile) {
+      await apiRequest('/signout', 'POST');
       setUser(null);
     } else {
       navigate('/home');
@@ -71,16 +84,20 @@ function ProfilePage({ user, setUser }) {
 
   return (
     <div className="space-y-6">
-      <Profile profile={profile} shotCount={posts.length} rollCount={albums.length}>
+      <Profile profile={profile} shotCount={posts.length} rollCount={albums.length} showDetails={canSeeAll}>
+        {!isOwnProfile && <p className="meta w-full">{status}</p>}
         {!isOwnProfile && isFriend && (
           <button className="btn-outline" onClick={() => friendAction('/users/' + user._id + '/friends/' + id, 'DELETE')}>
             Remove contact
           </button>
         )}
-        {!isOwnProfile && !isFriend && requestSent && (
-          <button className="btn-outline opacity-60" disabled>Request sent</button>
+        {!isOwnProfile && !isFriend && requestReceived && (
+          <>
+            <button className="btn" onClick={() => acceptRequest(id)}>Accept</button>
+            <button className="btn-outline" onClick={() => declineRequest(id)}>Decline</button>
+          </>
         )}
-        {!isOwnProfile && !isFriend && !requestSent && (
+        {!isOwnProfile && !isFriend && !requestReceived && !requestSent && (
           <button className="btn" onClick={() => friendAction('/users/' + id + '/requests', 'POST', { from_id: user._id })}>
             Add contact
           </button>
@@ -95,38 +112,41 @@ function ProfilePage({ user, setUser }) {
 
       {editing && canEdit && <EditProfile key={profile._id} profile={profile} onSaved={handleSaved} />}
 
-      <div className="flex">
-        {['shots', 'rolls', 'contacts'].map((name) => (
-          <button key={name} className={tab === name ? 'tab tab-active' : 'tab'} onClick={() => setTab(name)}>
-            {name}
-          </button>
-        ))}
-      </div>
+      {canSeeAll ? (
+        <>
+          <div className="flex">
+            {['shots', 'rolls', 'contacts'].map((name) => (
+              <button key={name} className={tab === name ? 'tab tab-active' : 'tab'} onClick={() => setTab(name)}>
+                {name}
+              </button>
+            ))}
+          </div>
 
-      {tab === 'shots' && (
-        <div className="space-y-6">
-          {isOwnProfile && <CreatePost user={user} onCreated={loadProfile} />}
-          <PostList posts={posts} />
-        </div>
-      )}
-
-      {tab === 'rolls' && (
-        <div className="space-y-6">
-          {isOwnProfile && <CreateAlbum user={user} onCreated={loadProfile} />}
-          <AlbumList albums={albums} />
-        </div>
-      )}
-
-      {tab === 'contacts' && (
-        <div className="space-y-6">
-          {isOwnProfile && (
-            <FriendRequests
-              requests={profile.friend_requests}
-              onAccept={(requestId) => friendAction('/users/' + user._id + '/friends', 'POST', { friend_id: requestId })}
-            />
+          {tab === 'shots' && (
+            <div className="space-y-6">
+              {isOwnProfile && <CreatePost user={user} onCreated={loadProfile} />}
+              <PostList posts={posts} />
+            </div>
           )}
-          <Friend friends={profile.friends} />
-        </div>
+
+          {tab === 'rolls' && (
+            <div className="space-y-6">
+              {isOwnProfile && <CreateAlbum user={user} onCreated={loadProfile} />}
+              <AlbumList albums={albums} />
+            </div>
+          )}
+
+          {tab === 'contacts' && (
+            <div className="space-y-6">
+              {isOwnProfile && (
+                <FriendRequests requests={profile.friend_requests} onAccept={acceptRequest} onDecline={declineRequest} />
+              )}
+              <Friend friends={profile.friends} />
+            </div>
+          )}
+        </>
+      ) : (
+        <p className="card text-paper/60">Add @{profile.username} as a contact to see their shots, rolls and contacts.</p>
       )}
     </div>
   );
