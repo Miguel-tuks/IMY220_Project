@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { apiRequest } from './api';
 import Header from './components/Header';
 import SplashPage from './pages/SplashPage';
 import HomePage from './pages/HomePage';
@@ -14,21 +15,24 @@ function ProfileRoute({ user, setUser }) {
 }
 
 function App() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState(null);
+  const [checking, setChecking] = useState(true);
 
-  const saveUser = (newUser) => {
-    if (newUser) {
-      localStorage.setItem('user', JSON.stringify(newUser));
-    } else {
-      localStorage.removeItem('user');
-    }
-    setUser(newUser);
-  };
+  useEffect(() => {
+    apiRequest('/me')
+      .then((data) => setUser(data.user))
+      .catch(() => setUser(null))
+      .finally(() => setChecking(false));
+  }, []);
+
+  if (checking) {
+    return <p className="p-8 font-mono text-xs uppercase tracking-[0.2em] text-paper/60">Loading...</p>;
+  }
 
   if (!user) {
     return (
       <Routes>
-        <Route path="/" element={<SplashPage onLogin={saveUser} />} />
+        <Route path="/" element={<SplashPage onLogin={setUser} />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     );
@@ -36,11 +40,11 @@ function App() {
 
   return (
     <>
-      <Header user={user} onLogout={() => saveUser(null)} />
+      <Header user={user} onLogout={() => setUser(null)} />
       <main className="mx-auto max-w-6xl px-4 py-8">
         <Routes>
           <Route path="/home" element={<HomePage user={user} />} />
-          <Route path="/profile/:id" element={<ProfileRoute user={user} setUser={saveUser} />} />
+          <Route path="/profile/:id" element={<ProfileRoute user={user} setUser={setUser} />} />
           <Route path="/post/:id" element={<PostPage user={user} />} />
           <Route path="/album/:id" element={<AlbumPage user={user} />} />
           {user.is_admin && <Route path="/admin" element={<AdminPage user={user} />} />}

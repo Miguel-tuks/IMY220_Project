@@ -3,6 +3,7 @@ const API_URL = 'http://localhost:3000/api';
 export async function apiRequest(path, method = 'GET', body) {
   const options = {
     method,
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' }
   };
 

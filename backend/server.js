@@ -9,9 +9,16 @@ const reports = require('./models/reports');
 
 const app = express();
 const PORT = 3000;
+const cookieOptions = { httpOnly: true, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000 };
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
+
+function getSessionUserId(req) {
+  const cookies = (req.headers.cookie || '').split('; ');
+  const sessionCookie = cookies.find((cookie) => cookie.startsWith('user_id='));
+  return sessionCookie ? sessionCookie.split('=')[1] : null;
+}
 
 async function removePost(postId) {
   await comments.deleteCommentsByPost(postId);
@@ -32,6 +39,7 @@ app.post('/api/signup', async (req, res) => {
   }
 
   const user = await users.createUser(username, email, password);
+  res.cookie('user_id', user._id.toString(), cookieOptions);
   res.status(201).json({ success: true, message: 'Sign up successful', user });
 });
 
@@ -47,11 +55,19 @@ app.post('/api/signin', async (req, res) => {
     return res.json({ success: false, message: 'Incorrect email or password' });
   }
 
+  res.cookie('user_id', user._id.toString(), cookieOptions);
   res.json({ success: true, message: 'Sign in successful', user });
 });
 
 app.post('/api/signout', (req, res) => {
+  res.clearCookie('user_id');
   res.json({ message: 'Signed out' });
+});
+
+app.get('/api/me', async (req, res) => {
+  const userId = getSessionUserId(req);
+  const user = userId ? await users.getUserById(userId) : null;
+  res.json({ user });
 });
 
 app.get('/api/users', async (req, res) => {
@@ -65,13 +81,22 @@ app.get('/api/users/:id', async (req, res) => {
 });
 
 app.put('/api/users/:id', async (req, res) => {
-  const { username, email, bio, profile_image } = req.body;
+  const { username, email, display_name, pronouns, bio, social_link, profile_image } = req.body;
 
   if (!username || !email) {
     return res.status(400).json({ message: 'Username and email are required' });
   }
 
-  const user = await users.updateUser(req.params.id, username, email, bio || '', profile_image || '');
+  const user = await users.updateUser(req.params.id, {
+    username,
+    email,
+    display_name: display_name || username,
+    pronouns: pronouns || '',
+    bio: bio || '',
+    social_link: social_link || '',
+    profile_image: profile_image || ''
+  });
+
   if (!user) return res.status(404).json({ message: 'User not found' });
   res.json(user);
 });

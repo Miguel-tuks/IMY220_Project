@@ -1,20 +1,18 @@
-const crypto = require('crypto');
 const { db, toId } = require('../db');
 
 const users = db.collection('users');
 const hidePassword = { projection: { password: 0 } };
-const previewFields = { projection: { username: 1, profile_image: 1 } };
-
-function hashPassword(password) {
-  return crypto.createHash('sha256').update(password).digest('hex');
-}
+const previewFields = { projection: { username: 1, display_name: 1, profile_image: 1 } };
 
 async function createUser(username, email, password) {
   const result = await users.insertOne({
     username,
+    display_name: username,
     email,
-    password: hashPassword(password),
+    password,
+    pronouns: '',
     bio: '',
+    social_link: '',
     profile_image: 'https://picsum.photos/id/64/200/200',
     is_admin: false,
     friends: [],
@@ -29,7 +27,7 @@ async function findExistingUser(username, email) {
 }
 
 async function checkLogin(email, password) {
-  return users.findOne({ email, password: hashPassword(password) }, hidePassword);
+  return users.findOne({ email, password }, hidePassword);
 }
 
 async function getUserById(id) {
@@ -52,11 +50,8 @@ async function searchUsers(search) {
   return users.find(filter, previewFields).sort({ username: 1 }).toArray();
 }
 
-async function updateUser(id, username, email, bio, profileImage) {
-  await users.updateOne(
-    { _id: toId(id) },
-    { $set: { username, email, bio, profile_image: profileImage } }
-  );
+async function updateUser(id, details) {
+  await users.updateOne({ _id: toId(id) }, { $set: details });
   return getUserById(id);
 }
 
@@ -91,7 +86,6 @@ async function removeFriend(userId, friendId) {
 }
 
 module.exports = {
-  hashPassword,
   createUser,
   findExistingUser,
   checkLogin,

@@ -1,6 +1,6 @@
 import Avatar from './Avatar';
 
-function Profile({ profile, shotCount, rollCount, children }) {
+function Profile({ profile, shotCount, rollCount, showDetails = true, children }) {
   const stats = [
     { label: 'Shots', value: shotCount },
     { label: 'Rolls', value: rollCount },
@@ -11,22 +11,34 @@ function Profile({ profile, shotCount, rollCount, children }) {
     <section className="card flex flex-col gap-6 md:flex-row md:items-start">
       <Avatar name={profile.username} image={profile.profile_image} size="h-28 w-28" />
       <div className="flex-1">
-        <h1 className="text-5xl">{profile.username}</h1>
+        <h1 className="text-5xl">{profile.display_name || profile.username}</h1>
         <p className="meta mt-1">
           @{profile.username}
+          {showDetails && profile.pronouns && ' · ' + profile.pronouns}
           {profile.is_admin && ' · Administrator'}
         </p>
-        <p className="mt-3 text-paper/80">{profile.bio}</p>
+        {showDetails && (
+          <>
+            <p className="mt-3 text-paper/80">{profile.bio}</p>
+            {profile.social_link && (
+              <a href={profile.social_link} target="_blank" rel="noreferrer" className="link mt-2 inline-block text-sm">
+                {profile.social_link}
+              </a>
+            )}
+          </>
+        )}
         <div className="mt-5 flex flex-wrap gap-2">{children}</div>
       </div>
-      <div className="flex gap-8 border-edge md:flex-col md:gap-4 md:border-l md:pl-8">
-        {stats.map((stat) => (
-          <div key={stat.label} className="text-center">
-            <p className="font-display text-3xl font-semibold">{stat.value}</p>
-            <p className="meta">{stat.label}</p>
-          </div>
-        ))}
-      </div>
+      {showDetails && (
+        <div className="flex gap-8 border-edge md:flex-col md:gap-4 md:border-l md:pl-8">
+          {stats.map((stat) => (
+            <div key={stat.label} className="text-center">
+              <p className="font-display text-3xl font-semibold">{stat.value}</p>
+              <p className="meta">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
