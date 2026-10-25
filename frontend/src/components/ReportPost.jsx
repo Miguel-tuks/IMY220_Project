@@ -12,16 +12,16 @@ function ReportPost({ user, postId }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await apiRequest('/reports', 'POST', { post_id: postId, user_id: user._id, reason });
+    const data = await apiRequest('/reports', 'POST', { post_id: postId, user_id: user._id, reason });
     setReason('');
-    setMessage('Thanks, this shot has been reported.');
+    setMessage(data.message);
   };
 
   return (
     <div>
-      <p className="label mt-0">Report shot</p>
+      <label htmlFor="report-reason" className="label mt-0">Report shot</label>
       <form onSubmit={handleSubmit} className="flex gap-2">
-        <select className="input" value={reason} onChange={(e) => setReason(e.target.value)} required>
+        <select id="report-reason" className="input" value={reason} onChange={(e) => setReason(e.target.value)} required>
           <option value="">Choose a reason</option>
           {reasons.map((item) => (
             <option key={item._id} value={item.reason}>{item.reason}</option>

@@ -6,7 +6,8 @@ import Feed from '../components/Feed';
 
 function HomePage({ user }) {
   const [feedType, setFeedType] = useState('local');
-  const [feed, setFeed] = useState({ posts: [], albums: [] });
+  const [sort, setSort] = useState('newest');
+  const [feed, setFeed] = useState({ posts: [], albums: [], activities: [] });
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -21,14 +22,23 @@ function HomePage({ user }) {
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
       <section>
-        <div className="mb-6 flex">
+        <div className="mb-4 flex">
           <button className={tabClass('local')} onClick={() => setFeedType('local')}>Contacts</button>
           <button className={tabClass('global')} onClick={() => setFeedType('global')}>Everyone</button>
+        </div>
+        <div className="mb-6 flex items-center justify-end gap-3">
+          <label htmlFor="feed-sort" className="meta">Sort by</label>
+          <select id="feed-sort" className="input w-auto" value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="newest">Newest first</option>
+            <option value="comments">Most commented</option>
+          </select>
         </div>
         <p className="error">{error}</p>
         <Feed
           posts={feed.posts}
           albums={feed.albums}
+          activities={feed.activities}
+          sort={sort}
           layout={feedType === 'local' ? 'list' : 'grid'}
           emptyMessage={feedType === 'local' ? 'Add some contacts to see their shots and rolls here.' : 'Nothing on Grain yet.'}
         />

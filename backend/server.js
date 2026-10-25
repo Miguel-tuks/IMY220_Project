@@ -6,6 +6,7 @@ const posts = require('./models/posts');
 const comments = require('./models/comments');
 const albums = require('./models/albums');
 const reports = require('./models/reports');
+const activities = require('./models/activities');
 
 const app = express();
 const PORT = 3000;
@@ -124,7 +125,6 @@ app.post('/api/users/:id/friends', async (req, res) => {
   res.json({ message: 'Friend request accepted' });
 });
 
-
 app.delete('/api/users/:id/requests/:fromId', async (req, res) => {
   await users.declineFriendRequest(req.params.id, req.params.fromId);
   res.json({ message: 'Friend request declined' });
@@ -135,21 +135,26 @@ app.delete('/api/users/:id/friends/:friendId', async (req, res) => {
   res.json({ message: 'Friend removed' });
 });
 
+async function getFeed(userIds) {
+  const feedPosts = userIds ? await posts.getPostsByUsers(userIds) : await posts.getAllPosts();
+  const feedAlbums = userIds ? await albums.getAlbumsByUsers(userIds) : await albums.getAllAlbums();
+
+  return {
+    posts: await posts.addFeedDetails(feedPosts),
+    albums: feedAlbums,
+    activities: await activities.getActivities(userIds)
+  };
+}
+
 app.get('/api/feed/global', async (req, res) => {
-  res.json({
-    posts: await posts.getAllPosts(),
-    albums: await albums.getAllAlbums()
-  });
+  res.json(await getFeed(null));
 });
 
 app.get('/api/feed/local/:userId', async (req, res) => {
   const user = await users.getUserById(req.params.userId);
   if (!user) return res.status(404).json({ message: 'User not found' });
 
-  res.json({
-    posts: await posts.getPostsByUsers(user.friends),
-    albums: await albums.getAlbumsByUsers(user.friends)
-  });
+  res.json(await getFeed([user._id, ...user.friends]));
 });
 
 app.get('/api/posts/user/:userId', async (req, res) => {
@@ -248,13 +253,20 @@ app.put('/api/albums/:id', async (req, res) => {
 });
 
 app.delete('/api/albums/:id', async (req, res) => {
+  await activities.deleteActivitiesByAlbum(req.params.id);
   const deleted = await albums.deleteAlbum(req.params.id);
   if (!deleted) return res.status(404).json({ message: 'Album not found' });
   res.json({ message: 'Album deleted' });
 });
 
 app.post('/api/albums/:id/posts', async (req, res) => {
-  await albums.addPostToAlbum(req.params.id, req.body.post_id);
+  const album = await albums.getAlbumById(req.params.id);
+  if (!album) return res.status(404).json({ message: 'Album not found' });
+
+  const added = await albums.addPostToAlbum(req.params.id, req.body.post_id);
+  if (added) {
+    await activities.createActivity(album.user_id, album._id, req.body.post_id);
+  }
   res.json({ message: 'Post added to album' });
 });
 
@@ -288,7 +300,10 @@ app.post('/api/reports', async (req, res) => {
   }
 
   const report = await reports.createReport(post_id, user_id, reason);
-  res.status(201).json(report);
+  if (!report) {
+    return res.json({ message: 'You have already reported this shot.' });
+  }
+  res.status(201).json({ message: 'Thanks, this shot has been reported.' });
 });
 
 app.delete('/api/reports/:id', async (req, res) => {

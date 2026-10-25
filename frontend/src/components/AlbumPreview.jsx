@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { formatDate } from '../api';
 import Avatar from './Avatar';
 import Hashtags from './Hashtags';
+import RollStrip from './RollStrip';
 
 function AlbumPreview({ album, showOwner = true }) {
   const count = album.post_ids.length;
@@ -19,16 +20,11 @@ function AlbumPreview({ album, showOwner = true }) {
           </div>
         </div>
       )}
-      <Link to={'/album/' + album._id} className="block border border-edge bg-ink hover:border-paper/40">
-        <div className="sprockets" />
-        <div className="flex h-28 items-center justify-center font-mono text-xs uppercase tracking-[0.2em] text-paper/60">
-          Roll · {count} {count === 1 ? 'shot' : 'shots'}
-        </div>
-        <div className="sprockets" />
-      </Link>
+      <RollStrip images={album.images} link={'/album/' + album._id} />
       <h3 className="mt-4 text-2xl">
         <Link to={'/album/' + album._id} className="hover:text-wash">{album.name}</Link>
       </h3>
+      <p className="meta mt-1">Roll · {count} {count === 1 ? 'shot' : 'shots'}</p>
       <p className="mt-1 text-sm text-paper/80">{album.description}</p>
       <Hashtags hashtags={album.hashtags} />
     </article>

@@ -3,6 +3,23 @@ const { db, toId, addUsernames } = require('../db');
 const posts = db.collection('posts');
 const newestFirst = { created_at: -1 };
 
+async function addFeedDetails(items) {
+  const postIds = items.map((post) => post._id);
+  const postComments = await db.collection('comments').find({ post_id: { $in: postIds } }).sort({ created_at: -1 }).toArray();
+  const commentsWithNames = await addUsernames(postComments);
+  const postReports = await db.collection('reports').find({ post_id: { $in: postIds } }).toArray();
+
+  return items.map((post) => {
+    const comments = commentsWithNames.filter((comment) => comment.post_id.equals(post._id));
+    return {
+      ...post,
+      comment_count: comments.length,
+      latest_comments: comments.slice(0, 2).reverse(),
+      report_count: postReports.filter((report) => report.post_id.equals(post._id)).length
+    };
+  });
+}
+
 async function createPost(userId, imageUrl, description, hashtags) {
   const result = await posts.insertOne({
     user_id: toId(userId),
@@ -47,6 +64,7 @@ async function deletePost(id) {
 }
 
 module.exports = {
+  addFeedDetails,
   createPost,
   getPostById,
   getAllPosts,

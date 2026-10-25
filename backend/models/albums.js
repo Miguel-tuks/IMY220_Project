@@ -3,6 +3,19 @@ const { db, toId, addUsernames } = require('../db');
 const albums = db.collection('albums');
 const newestFirst = { created_at: -1 };
 
+async function addCoverImages(items) {
+  const postIds = items.flatMap((album) => album.post_ids);
+  const albumPosts = await db.collection('posts').find({ _id: { $in: postIds } }).toArray();
+
+  return items.map((album) => ({
+    ...album,
+    images: albumPosts
+      .filter((post) => album.post_ids.some((id) => id.equals(post._id)))
+      .slice(0, 4)
+      .map((post) => post.image_url)
+  }));
+}
+
 async function createAlbum(userId, name, description, hashtags) {
   const result = await albums.insertOne({
     user_id: toId(userId),
@@ -24,12 +37,12 @@ async function getAlbumById(id) {
 
 async function getAllAlbums() {
   const allAlbums = await albums.find().sort(newestFirst).toArray();
-  return addUsernames(allAlbums);
+  return addUsernames(await addCoverImages(allAlbums));
 }
 
 async function getAlbumsByUsers(userIds) {
   const userAlbums = await albums.find({ user_id: { $in: userIds.map(toId) } }).sort(newestFirst).toArray();
-  return addUsernames(userAlbums);
+  return addUsernames(await addCoverImages(userAlbums));
 }
 
 async function updateAlbum(id, name, description, hashtags) {
@@ -47,7 +60,8 @@ async function deleteAlbumsByUser(userId) {
 }
 
 async function addPostToAlbum(albumId, postId) {
-  await albums.updateOne({ _id: toId(albumId) }, { $addToSet: { post_ids: toId(postId) } });
+  const result = await albums.updateOne({ _id: toId(albumId) }, { $addToSet: { post_ids: toId(postId) } });
+  return result.modifiedCount;
 }
 
 async function removePostFromAlbum(albumId, postId) {
@@ -59,6 +73,7 @@ async function removePostFromAllAlbums(postId) {
 }
 
 module.exports = {
+  addCoverImages,
   createAlbum,
   getAlbumById,
   getAllAlbums,

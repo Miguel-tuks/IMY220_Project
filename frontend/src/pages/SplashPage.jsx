@@ -66,7 +66,7 @@ function SplashPage({ onLogin }) {
 
       <footer className="meta mx-auto flex w-full max-w-6xl justify-between px-4 py-5">
         <span>Grain © 2026</span>
-        <span>Built for IMY 220</span>
+        <span>IMY 220</span>
       </footer>
     </div>
   );

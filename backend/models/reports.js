@@ -13,6 +13,9 @@ async function addReason(reason) {
 }
 
 async function createReport(postId, userId, reason) {
+  const existing = await reports.findOne({ post_id: toId(postId), user_id: toId(userId) });
+  if (existing) return null;
+
   const result = await reports.insertOne({
     post_id: toId(postId),
     user_id: toId(userId),
