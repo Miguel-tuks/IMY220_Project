@@ -55,6 +55,16 @@ function PostPage({ user }) {
 
         <aside className="space-y-6">
           <Post post={post}>
+            {post.albums.length > 0 && (
+              <div>
+                <p className="label mt-0">In rolls</p>
+                <div className="flex flex-wrap gap-3">
+                  {post.albums.map((album) => (
+                    <Link key={album._id} to={'/album/' + album._id} className="link">{album.name}</Link>
+                  ))}
+                </div>
+              </div>
+            )}
             {canEdit && (
               <div className="flex gap-2">
                 <button className="btn-outline" onClick={() => setEditing(!editing)}>
@@ -63,7 +73,7 @@ function PostPage({ user }) {
                 <button className="btn-danger" onClick={handleDelete}>Delete</button>
               </div>
             )}
-            <AddToAlbum user={user} postId={id} />
+            <AddToAlbum user={user} postId={id} onAdded={loadPost} />
             {post.user_id !== user._id && <ReportPost user={user} postId={id} />}
           </Post>
           {editing && <EditPost post={post} onSaved={handleSaved} />}

@@ -13,7 +13,7 @@ const PORT = 3000;
 const cookieOptions = { httpOnly: true, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000 };
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
-app.use(express.json());
+app.use(express.json({limit: '5mb'}));
 
 function getSessionUserId(req) {
   const cookies = (req.headers.cookie || '').split('; ');
@@ -175,7 +175,7 @@ app.get('/api/posts/user/:userId', async (req, res) => {
 app.get('/api/posts/:id', async (req, res) => {
   const post = await posts.getPostById(req.params.id);
   if (!post) return res.status(404).json({ message: 'Post not found' });
-  res.json(post);
+  res.json({ ...post, albums: await albums.getAlbumsForPost(req.params.id) });
 });
 
 app.post('/api/posts', async (req, res) => {

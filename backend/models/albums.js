@@ -77,6 +77,10 @@ async function removePostFromAllAlbums(postId) {
   await albums.updateMany({}, { $pull: { post_ids: toId(postId) } });
 }
 
+async function getAlbumsForPost(postId) {
+  return albums.find({ post_ids: toId(postId) }, { projection: { name: 1 } }).sort({ name: 1 }).toArray();
+}
+
 module.exports = {
   addCoverImages,
   createAlbum,
@@ -89,5 +93,6 @@ module.exports = {
   deleteAlbumsByUser,
   addPostToAlbum,
   removePostFromAlbum,
-  removePostFromAllAlbums
+  removePostFromAllAlbums,
+  getAlbumsForPost
 };
