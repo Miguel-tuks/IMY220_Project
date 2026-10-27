@@ -1,37 +1,29 @@
-IMY 220 Project 2026 - Final submission
+Grain - IMY 220 Project 2026
 Miguel De Freitas u23744512
+GitHub: https://github.com/Miguel-tuks/IMY220_Project
 
-GitHub Repository:
-https://github.com/Miguel-tuks/IMY220_Project
+RUN WITH DOCKER (from the project root)
+    docker build -t imy220-backend ./backend
+    docker run -d -p 3000:3000 --name imy220-backend-container imy220-backend
+    docker build -t imy220-frontend ./frontend
+    docker run -d -p 5173:5173 --name imy220-frontend-container imy220-frontend
+Open http://localhost:5173 
 
-DATABASE (MongoDB Atlas)
-Connection string (also in backend/db.js): mongodb+srv://grail_user:ophcqYTDJfDgv3E8@cluster0.k0faycn.mongodb.net/?appName=Cluster0
-Database name: grail
-Collections: users, posts, albums, comments, reports, report_reasons
-Test accounts:
-    admin@grail.com  / admin123      
-    miguel@grail.com / password123   
-    jane@grail.com   / password123
-    sam@grail.com    / password123
+TEST ACCOUNTS
+    test@test.com / test1234
+    admin@grain.com / admin123
+    All other users use password123
 
-BACKEND
-Build:
-    cd backend
-    docker build -t imy220-backend .
-    Seed the database (resets all data to the test data above):
-    docker run --rm imy220-backend node seed.js
-Run:
-    docker run -p 3000:3000 --name imy220-backend-container imy220-backend
+DATABASE
+    Database name: grain
+    Connection string:
+    mongodb+srv://grain_user:pn3XObnCJA2BJzLH@cluster0.k0faycn.mongodb.net/?appName=Cluster0
+    Exported data: database/ folder 
+    Reset to test data: docker run --rm imy220-backend node seed.js
 
-FRONTEND
-Build:
-    cd frontend
-    docker build -t imy220-frontend .
-Run:
-    docker run -p 5173:5173 --name imy220-frontend-container imy220-frontend
-
-Access the application at http://localhost:5173
-
-STOP AND REMOVE CONTAINERS
-    docker stop imy220-frontend-container imy220-backend-container
-    docker rm imy220-frontend-container imy220-backend-container
+DIRECTORY STRUCTURE
+    backend/     server.js (routes), db.js (MongoDB connection),
+                 models/ (database functions), seed.js, export.js, Dockerfile
+    frontend/    index.html, public/images/ (favicon),
+                 src/components/, src/pages/, src/styles/, Dockerfile
+    database/    Exported MongoDB data in JSON format

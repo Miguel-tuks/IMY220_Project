@@ -1,0 +1,47 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae080d43782e823d5f15a4c"
+    },
+    "post_id": {
+      "$oid": "6ae080d33782e823d5f15a2b"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a17"
+    },
+    "reason": "Spam",
+    "created_at": {
+      "$date": "2026-10-26T15:33:39.388Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d43782e823d5f15a4d"
+    },
+    "post_id": {
+      "$oid": "6ae080d33782e823d5f15a2b"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a19"
+    },
+    "reason": "Spam",
+    "created_at": {
+      "$date": "2026-10-26T20:21:39.388Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d43782e823d5f15a4e"
+    },
+    "post_id": {
+      "$oid": "6ae080d33782e823d5f15a2b"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a1b"
+    },
+    "reason": "Inappropriate content",
+    "created_at": {
+      "$date": "2026-10-26T22:45:39.388Z"
+    }
+  }
+]

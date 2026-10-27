@@ -67,17 +67,17 @@ function makeReport(postKey, username, reason, days) {
 }
 
 const users = [
-  makeUser({ username: 'admin', display_name: 'Site Admin', email: 'admin@grail.com', password: 'admin123', bio: 'Keeping Grain tidy.', image: 1062, days: 60, is_admin: true }),
+  makeUser({ username: 'admin', display_name: 'Site Admin', email: 'admin@grain.com', password: 'admin123', bio: 'Keeping Grain tidy.', image: 1062, days: 60, is_admin: true }),
   makeUser({ username: 'testuser', display_name: 'Test User', email: 'test@test.com', password: 'test1234', pronouns: 'they/them', bio: 'Learning film one roll at a time.', image: 177, days: 30 }),
-  makeUser({ username: 'john', display_name: 'John Smith', email: 'john@grail.com', password: 'password123', pronouns: 'he/him', bio: 'Shooting 35mm around town.', social_link: 'https://example.com/john', image: 1005, days: 45 }),
-  makeUser({ username: 'mary', display_name: 'Mary Jones', email: 'mary@grail.com', password: 'password123', pronouns: 'she/her', bio: 'Coffee, film and long walks.', image: 1027, days: 40 }),
-  makeUser({ username: 'david', display_name: 'David Brown', email: 'david@grail.com', password: 'password123', bio: 'Mostly mountains, mostly medium format.', image: 1012, days: 35 }),
-  makeUser({ username: 'sarah', display_name: 'Sarah Wilson', email: 'sarah@grail.com', password: 'password123', pronouns: 'she/her', bio: 'Colour film and Saturday markets.', image: 64, days: 28 }),
-  makeUser({ username: 'james', display_name: 'James Taylor', email: 'james@grail.com', password: 'password123', pronouns: 'he/him', bio: 'Wildlife on long lenses and expired film.', image: 91, days: 25 }),
-  makeUser({ username: 'emma', display_name: 'Emma Clark', email: 'emma@grail.com', password: 'password123', pronouns: 'she/her', bio: 'Coastlines and road trips.', image: 65, days: 20 }),
-  makeUser({ username: 'peter', display_name: 'Peter Hall', email: 'peter@grail.com', password: 'password123', pronouns: 'he/him', bio: 'Studio portraits, usually of my dog.', image: 338, days: 18 }),
-  makeUser({ username: 'lucy', display_name: 'Lucy Green', email: 'lucy@grail.com', password: 'password123', pronouns: 'she/her', bio: 'Just bought my first film camera.', image: 1011, days: 14 }),
-  makeUser({ username: 'tom', display_name: 'Tom White', email: 'tom@grail.com', password: 'password123', bio: 'Camera gear for sale.', image: 342, days: 10 })
+  makeUser({ username: 'john', display_name: 'John Smith', email: 'john@grain.com', password: 'password123', pronouns: 'he/him', bio: 'Shooting 35mm around town.', social_link: 'https://example.com/john', image: 1005, days: 45 }),
+  makeUser({ username: 'mary', display_name: 'Mary Jones', email: 'mary@grain.com', password: 'password123', pronouns: 'she/her', bio: 'Coffee, film and long walks.', image: 1027, days: 40 }),
+  makeUser({ username: 'david', display_name: 'David Brown', email: 'david@grain.com', password: 'password123', bio: 'Mostly mountains, mostly medium format.', image: 1012, days: 35 }),
+  makeUser({ username: 'sarah', display_name: 'Sarah Wilson', email: 'sarah@grain.com', password: 'password123', pronouns: 'she/her', bio: 'Colour film and Saturday markets.', image: 64, days: 28 }),
+  makeUser({ username: 'james', display_name: 'James Taylor', email: 'james@grain.com', password: 'password123', pronouns: 'he/him', bio: 'Wildlife on long lenses and expired film.', image: 91, days: 25 }),
+  makeUser({ username: 'emma', display_name: 'Emma Clark', email: 'emma@grain.com', password: 'password123', pronouns: 'she/her', bio: 'Coastlines and road trips.', image: 65, days: 20 }),
+  makeUser({ username: 'peter', display_name: 'Peter Hall', email: 'peter@grain.com', password: 'password123', pronouns: 'he/him', bio: 'Studio portraits, usually of my dog.', image: 338, days: 18 }),
+  makeUser({ username: 'lucy', display_name: 'Lucy Green', email: 'lucy@grain.com', password: 'password123', pronouns: 'she/her', bio: 'Just bought my first film camera.', image: 1011, days: 14 }),
+  makeUser({ username: 'tom', display_name: 'Tom White', email: 'tom@grain.com', password: 'password123', bio: 'Camera gear for sale.', image: 342, days: 10 })
 ];
 
 const friendships = [

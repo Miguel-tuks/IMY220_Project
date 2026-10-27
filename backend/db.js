@@ -1,9 +1,9 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
-const uri = 'mongodb+srv://grail_user:ophcqYTDJfDgv3E8@cluster0.k0faycn.mongodb.net/?appName=Cluster0';
+const uri = 'mongodb+srv://grain_user:pn3XObnCJA2BJzLH@cluster0.k0faycn.mongodb.net/?appName=Cluster0';
 
 const client = new MongoClient(uri);
-const db = client.db('grail');
+const db = client.db('grain');
 
 function toId(id) {
   return ObjectId.isValid(id) ? new ObjectId(id) : null;

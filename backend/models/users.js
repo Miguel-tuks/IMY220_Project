@@ -13,7 +13,7 @@ async function createUser(username, email, password) {
     pronouns: '',
     bio: '',
     social_link: '',
-    profile_image: 'https://picsum.photos/id/64/200/200',
+    profile_image: '',
     is_admin: false,
     friends: [],
     friend_requests: [],

@@ -1,0 +1,142 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a2c"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a16"
+    },
+    "name": "Golden Hour",
+    "description": "Favourite late-afternoon frames.",
+    "hashtags": [
+      "goldenhour",
+      "35mm"
+    ],
+    "post_ids": [
+      {
+        "$oid": "6ae080d33782e823d5f15a1f"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a20"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-10-12T10:45:39.388Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a2d"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a17"
+    },
+    "name": "Weekend Walks",
+    "description": "Places I walked this month.",
+    "hashtags": [
+      "nature",
+      "hiking"
+    ],
+    "post_ids": [
+      {
+        "$oid": "6ae080d33782e823d5f15a22"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-10-19T10:45:39.388Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a2f"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a18"
+    },
+    "name": "Peaks",
+    "description": "High altitude, low temperatures.",
+    "hashtags": [
+      "mountains",
+      "winter"
+    ],
+    "post_ids": [
+      {
+        "$oid": "6ae080d33782e823d5f15a23"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-10-20T10:45:39.388Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a30"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a19"
+    },
+    "name": "Market Days",
+    "description": "Saturdays at the market.",
+    "hashtags": [
+      "market",
+      "colour"
+    ],
+    "post_ids": [
+      {
+        "$oid": "6ae080d33782e823d5f15a26"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-10-22T10:45:39.388Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a2e"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a15"
+    },
+    "name": "First Roll",
+    "description": "Every frame from my first roll on Grain, keepers and misses.",
+    "hashtags": [
+      "35mm",
+      "hp5"
+    ],
+    "post_ids": [
+      {
+        "$oid": "6ae080d33782e823d5f15a24"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a25"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-10-24T10:45:39.388Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a31"
+    },
+    "user_id": {
+      "$oid": "6ae080d33782e823d5f15a1a"
+    },
+    "name": "Wild Things",
+    "description": "Animals that sat still long enough.",
+    "hashtags": [
+      "wildlife"
+    ],
+    "post_ids": [
+      {
+        "$oid": "6ae080d33782e823d5f15a27"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a2a"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-10-25T22:45:39.388Z"
+    }
+  }
+]

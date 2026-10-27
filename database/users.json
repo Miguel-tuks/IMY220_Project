@@ -1,0 +1,280 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a14"
+    },
+    "username": "admin",
+    "display_name": "Site Admin",
+    "email": "admin@grain.com",
+    "password": "admin123",
+    "pronouns": "",
+    "bio": "Keeping Grain tidy.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/1062/200/200",
+    "is_admin": true,
+    "friends": [],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-08-28T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a15"
+    },
+    "username": "testuser",
+    "display_name": "Test User",
+    "email": "test@test.com",
+    "password": "test1234",
+    "pronouns": "they/them",
+    "bio": "Learning film one roll at a time.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/177/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a16"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a17"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a19"
+      }
+    ],
+    "friend_requests": [
+      {
+        "$oid": "6ae080d33782e823d5f15a1d"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a1e"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-09-27T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a16"
+    },
+    "username": "john",
+    "display_name": "John Smith",
+    "email": "john@grain.com",
+    "password": "password123",
+    "pronouns": "he/him",
+    "bio": "Shooting 35mm around town.",
+    "social_link": "https://example.com/john",
+    "profile_image": "https://picsum.photos/id/1005/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a15"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a17"
+      }
+    ],
+    "friend_requests": [
+      {
+        "$oid": "6ae080d33782e823d5f15a18"
+      }
+    ],
+    "created_at": {
+      "$date": "2026-09-12T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a17"
+    },
+    "username": "mary",
+    "display_name": "Mary Jones",
+    "email": "mary@grain.com",
+    "password": "password123",
+    "pronouns": "she/her",
+    "bio": "Coffee, film and long walks.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/1027/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a15"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a16"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a1b"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-09-17T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a18"
+    },
+    "username": "david",
+    "display_name": "David Brown",
+    "email": "david@grain.com",
+    "password": "password123",
+    "pronouns": "",
+    "bio": "Mostly mountains, mostly medium format.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/1012/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a1e"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-09-22T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a19"
+    },
+    "username": "sarah",
+    "display_name": "Sarah Wilson",
+    "email": "sarah@grain.com",
+    "password": "password123",
+    "pronouns": "she/her",
+    "bio": "Colour film and Saturday markets.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/64/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a15"
+      },
+      {
+        "$oid": "6ae080d33782e823d5f15a1a"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-09-29T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a1a"
+    },
+    "username": "james",
+    "display_name": "James Taylor",
+    "email": "james@grain.com",
+    "password": "password123",
+    "pronouns": "he/him",
+    "bio": "Wildlife on long lenses and expired film.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/91/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a19"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-10-02T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a1b"
+    },
+    "username": "emma",
+    "display_name": "Emma Clark",
+    "email": "emma@grain.com",
+    "password": "password123",
+    "pronouns": "she/her",
+    "bio": "Coastlines and road trips.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/65/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a17"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-10-07T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a1c"
+    },
+    "username": "peter",
+    "display_name": "Peter Hall",
+    "email": "peter@grain.com",
+    "password": "password123",
+    "pronouns": "he/him",
+    "bio": "Studio portraits, usually of my dog.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/338/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a1d"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-10-09T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a1d"
+    },
+    "username": "lucy",
+    "display_name": "Lucy Green",
+    "email": "lucy@grain.com",
+    "password": "password123",
+    "pronouns": "she/her",
+    "bio": "Just bought my first film camera.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/1011/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a1c"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-10-13T10:45:39.387Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae080d33782e823d5f15a1e"
+    },
+    "username": "tom",
+    "display_name": "Tom White",
+    "email": "tom@grain.com",
+    "password": "password123",
+    "pronouns": "",
+    "bio": "Camera gear for sale.",
+    "social_link": "",
+    "profile_image": "https://picsum.photos/id/342/200/200",
+    "is_admin": false,
+    "friends": [
+      {
+        "$oid": "6ae080d33782e823d5f15a18"
+      }
+    ],
+    "friend_requests": [],
+    "created_at": {
+      "$date": "2026-10-17T10:45:39.387Z"
+    }
+  }
+]

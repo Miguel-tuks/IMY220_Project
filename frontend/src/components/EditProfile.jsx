@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { apiRequest } from '../api';
+import ImageInput from './ImageInput';
 
 function EditProfile({ profile, onSaved }) {
   const [form, setForm] = useState({
@@ -61,10 +62,13 @@ function EditProfile({ profile, onSaved }) {
           <label htmlFor="edit-social-link" className="label">Social link</label>
           <input id="edit-social-link" name="social_link" className="input" type="url" placeholder="https://" value={form.social_link} onChange={updateField} />
         </div>
-        <div>
-          <label htmlFor="edit-profile-image" className="label">Profile image URL</label>
-          <input id="edit-profile-image" name="profile_image" className="input" type="url" value={form.profile_image} onChange={updateField} />
-        </div>
+        <ImageInput
+          id="edit-profile-image"
+          label="Profile photo"
+          value={form.profile_image}
+          onChange={(image) => setForm({ ...form, profile_image: image })}
+          previewClass="h-28 w-28 rounded-full"
+        />
         <div>
           <p className="error">{error}</p>
           <button type="submit" className="btn mt-2">Save</button>
