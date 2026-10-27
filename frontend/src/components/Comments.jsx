@@ -32,8 +32,10 @@ function Comments({ user, postId }) {
       <p className="label mt-0">
         {comments.length} {comments.length === 1 ? 'comment' : 'comments'}
       </p>
+      <label htmlFor="new-comment" className="label">Add a comment</label>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
+          id="new-comment"
           className="input"
           type="text"
           placeholder="Write a comment…"
@@ -43,7 +45,7 @@ function Comments({ user, postId }) {
         />
         <button type="submit" className="btn">Post</button>
       </form>
-      <div className="mt-5 space-y-4">
+      <div className="mt-5 max-h-96 space-y-4 overflow-y-auto pr-2">
         {comments.map((comment) => (
           <div key={comment._id} className="flex gap-3">
             <Avatar name={comment.username} size="h-8 w-8" />

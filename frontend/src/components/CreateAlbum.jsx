@@ -32,16 +32,16 @@ function CreateAlbum({ user, onCreated }) {
       <h2 className="text-2xl">New roll</h2>
       <form onSubmit={handleSubmit} className="grid gap-x-6 md:grid-cols-2">
         <div>
-          <label className="label">Name</label>
-          <input className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <label htmlFor="new-roll-name" className="label">Name</label>
+          <input id="new-roll-name" className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
         <div>
-          <label className="label">Hashtags</label>
-          <input className="input" type="text" placeholder="#coastal #winter" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
+          <label htmlFor="new-roll-hashtags" className="label">Hashtags</label>
+          <input id="new-roll-hashtags" className="input" type="text" placeholder="#coastal #winter" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
         </div>
         <div className="md:col-span-2">
-          <label className="label">Description</label>
-          <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
+          <label htmlFor="new-roll-description" className="label">Description</label>
+          <textarea id="new-roll-description" className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
         <div>
           <p className="error">{error}</p>

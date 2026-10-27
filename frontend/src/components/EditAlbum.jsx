@@ -27,16 +27,16 @@ function EditAlbum({ album, onSaved }) {
       <h2 className="text-2xl">Edit roll</h2>
       <form onSubmit={handleSubmit} className="grid gap-x-6 md:grid-cols-2">
         <div>
-          <label className="label">Name</label>
-          <input className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <label htmlFor="edit-roll-name" className="label">Name</label>
+          <input id="edit-roll-name" className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
         <div>
-          <label className="label">Hashtags</label>
-          <input className="input" type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
+          <label htmlFor="edit-roll-hashtags" className="label">Hashtags</label>
+          <input id="edit-roll-hashtags" className="input" type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
         </div>
         <div className="md:col-span-2">
-          <label className="label">Description</label>
-          <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
+          <label htmlFor="edit-roll-description" className="label">Description</label>
+          <textarea id="edit-roll-description" className="input" value={description} onChange={(e) => setDescription(e.target.value)} />
         </div>
         <div>
           <p className="error">{error}</p>

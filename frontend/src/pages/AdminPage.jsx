@@ -56,7 +56,7 @@ function AdminPage({ user }) {
           {reports.length === 0 && <p className="text-sm text-paper/60">No reports.</p>}
           <div className="space-y-3">
             {reports.map((report) => (
-              <div key={report._id} className="flex flex-wrap items-center justify-between gap-2 border-b border-edge pb-3">
+              <div key={report._id} className="space-y-3 border-b border-edge pb-3">
                 <p>
                   <span className="font-bold text-safelight">{report.reason}</span>
                   <span className="text-sm text-paper/60"> · reported by @{report.username}</span>
@@ -78,8 +78,10 @@ function AdminPage({ user }) {
               <span key={item._id} className="tag">{item.reason}</span>
             ))}
           </div>
-          <form onSubmit={addReason} className="mt-4 flex gap-2">
+          <label htmlFor="new-reason" className="label">Add a reason</label>
+          <form onSubmit={addReason} className="flex gap-2">
             <input
+              id="new-reason"
               className="input"
               type="text"
               placeholder="New reason"

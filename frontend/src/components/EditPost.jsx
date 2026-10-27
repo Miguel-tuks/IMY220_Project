@@ -24,11 +24,11 @@ function EditPost({ post, onSaved }) {
     <section className="card">
       <h2 className="text-2xl">Edit shot</h2>
       <form onSubmit={handleSubmit}>
-        <label className="label">Description</label>
-        <textarea className="input" value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <label htmlFor="edit-shot-description" className="label">Description</label>
+        <textarea id="edit-shot-description" className="input" value={description} onChange={(e) => setDescription(e.target.value)} required />
 
-        <label className="label">Hashtags</label>
-        <input className="input" type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
+        <label htmlFor="edit-shot-hashtags" className="label">Hashtags</label>
+        <input id="edit-shot-hashtags" className="input" type="text" value={hashtags} onChange={(e) => setHashtags(e.target.value)} />
 
         <p className="error">{error}</p>
         <button type="submit" className="btn mt-2">Save</button>

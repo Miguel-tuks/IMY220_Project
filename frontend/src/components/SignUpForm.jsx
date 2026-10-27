@@ -50,17 +50,17 @@ function SignUpForm({ onLogin }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label className="label">Email</label>
-      <input className="input" type="email" placeholder="you@studio.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <label htmlFor="signup-email" className="label">Email</label>
+      <input id="signup-email" className="input" type="email" placeholder="you@studio.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-      <label className="label">Username</label>
-      <input className="input" type="text" placeholder="yourhandle" value={username} onChange={(e) => setUsername(e.target.value)} required />
+      <label htmlFor="signup-username" className="label">Username</label>
+      <input id="signup-username" className="input" type="text" placeholder="yourhandle" value={username} onChange={(e) => setUsername(e.target.value)} required />
 
-      <label className="label">Password</label>
-      <input className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <label htmlFor="signup-password" className="label">Password</label>
+      <input id="signup-password" className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
-      <label className="label">Confirm password</label>
-      <input className="input" type="password" placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+      <label htmlFor="signup-confirm" className="label">Confirm password</label>
+      <input id="signup-confirm" className="input" type="password" placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
 
       <p className="error">{error}</p>
       <button type="submit" className="btn mt-3 w-full py-3">Load your first roll</button>

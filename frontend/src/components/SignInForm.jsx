@@ -38,11 +38,11 @@ function SignInForm({ onLogin }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label className="label">Email</label>
-      <input className="input" type="email" placeholder="you@studio.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <label htmlFor="signin-email" className="label">Email</label>
+      <input id="signin-email" className="input" type="email" placeholder="you@studio.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
-      <label className="label">Password</label>
-      <input className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <label htmlFor="signin-password" className="label">Password</label>
+      <input id="signin-password" className="input" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
       <p className="error">{error}</p>
       <button type="submit" className="btn mt-3 w-full py-3">Log in</button>
